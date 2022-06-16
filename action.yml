@@ -1,0 +1,39 @@
+
+name: ggci-sh
+description: Sends messages to google chat when a job fails
+author: datamole-ai
+branding:
+  icon: 'trash-2'
+  color: 'green'
+
+inputs:
+  json:
+    description: 'list of job objects'
+    required: true
+    default: ''
+  gchatURL:
+    description: 'google chat webhook'
+    required: true
+    default: ''
+runs:
+  using: "composite"
+  
+  steps:
+  - shell: bash
+    env:
+      NEEDS_CONTEXT: ${{ inputs.json }}
+      GOOGLE_CHAT_WEBHOOK: ${{ inputs.gchatURL }}
+    
+    run: |
+      list=( $(echo $NEEDS_CONTEXT | jq 'keys' | sed -e 's/\[ //g' -e 's/\ ]//g' -e 's/\,//g' | tr -d '"') ) 
+      for job in ${list[@]}
+        do
+          job_status=$(echo $NEEDS_CONTEXT | jq  --arg j "$job" '.[$j]' | jq .'result' | tr -d '"')
+          [[ "$job_status" == 'failure' ]] && \
+            text="Job *$job* failed on \`$GITHUB_REF\` @ <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|$GITHUB_REPOSITORY>"
+        done
+      message=$( jq -n --arg t "$text" '{text: $t}' )
+      curl -i \
+        -H 'Content-Type: application/json' -d "$message" \
+        -X POST "$GOOGLE_CHAT_WEBHOOK"
+  
