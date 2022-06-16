@@ -1,4 +1,4 @@
-# ggci-sh
+# google-chat-job-failed
 This sends messages to google chat when a workflow job fails.
 
 ## Usage
@@ -14,8 +14,9 @@ post-to-google-chat:
     if: always() 
     runs-on: ubuntu-latest
     steps:
-      - name: ggci-sh
-        uses: zero-nowhere/ggci-sh@main
+      - name: google-chat-job-failed
+        uses: datamole-ai/google-chat-job-failed@main
+
         with:
           gchatURL: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           json: ${{ toJSON(needs) }}
