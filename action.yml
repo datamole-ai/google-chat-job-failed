@@ -3,7 +3,7 @@ name: google-chat-job-failed
 description: Sends messages to google chat when a job fails
 author: datamole-ai
 branding:
-  icon: 'trash-2'
+  icon: 'tool'
   color: 'green'
 
 inputs:
