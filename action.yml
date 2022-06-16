@@ -1,5 +1,5 @@
 
-name: ggci-sh
+name: google-chat-job-failed
 description: Sends messages to google chat when a job fails
 author: datamole-ai
 branding:
