@@ -28,9 +28,10 @@ runs:
     run: |
       GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
       HEAD=$(echo ${GITHUB_REF##*/})
+      REPO_NAME=$(echo ${GITHUB_REPOSITORY#*/})
       failed_list=()
       list=( $(echo $NEEDS_CONTEXT | jq 'keys' | sed -e 's/\[ //g' -e 's/\ ]//g' -e 's/\,//g' | tr -d '"') ) 
-      echo ${list[@]}
+
       for job in ${list[@]}
         do
           job_status=$(echo $NEEDS_CONTEXT | jq  --arg j "$job" '.[$j]' | jq .'result' | tr -d '"')
@@ -39,13 +40,14 @@ runs:
         done
       failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
       
-      text="<b>$failed_list</b><br> on $HEAD}"
+      text="<b>$failed_list</b><br> on branch: \`$HEAD\`"
       message=$( jq -n \
                         --arg fl "$failed_list" \
                         --arg txt "$text" \
+                        --arg repo "repo: $REPO_NAME" \
                         --arg gl "$GITHUB_LINK"\
                         --arg ref "on branch $HEAD" \
-                        '{ "cards": [ {"header": {"title": "<b>JOBS FAILED</b>", "subtitle": $ref}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt}}]}]}]}' )
+                        '{ "cards": [ {"header": {"title": "<b>JOBS FAILED</b>", "subtitle": $repo}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt}}]}]}]}' )
       curl -i \
         -H 'Content-Type: application/json' -d "$message" \
         -X POST "$GOOGLE_CHAT_WEBHOOK"
