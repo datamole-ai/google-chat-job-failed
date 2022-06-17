@@ -39,14 +39,14 @@ runs:
         done
       failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
       
-      text="<b>$failed_list</b><br><br>branch: <b>$HEAD\</b>"
+      text="Failed jobs:<br><b>$failed_list</b>"
       message=$( jq -n \
                         --arg fl "$failed_list" \
                         --arg txt "$text" \
-                        --arg repo "repo: $REPO_NAME" \
+                        --arg repo "$REPO_NAME : $HEAD" \
                         --arg gl "$GITHUB_LINK"\
                         --arg ref "on branch $HEAD" \
-                        '{"cards":[{"header":{"title":"<b>JOBS_FAILED</b>","subtitle":$repo},"sections":[{"widgets":[{"buttons":[{"textButton":{"text":"VIEW_RUN","onClick":{"openLink":{"url":$gl}}}}]},{"textParagraph":{"text":$txt}}]}]}]}' )
+                        '{"cards":[{"header":{"title":"<b>JOBS_FAILED</b>","subtitle":$repo},"sections":[{"widgets":[{"textParagraph":{"text":$txt}},{"buttons":[{"textButton":{"text":"VIEW_RUN","onClick":{"openLink":{"url":$gl}}}}]}]}]}]}' )
       curl -i \
         -H 'Content-Type: application/json' -d "$message" \
         -X POST "$GOOGLE_CHAT_WEBHOOK"
