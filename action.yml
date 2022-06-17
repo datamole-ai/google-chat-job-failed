@@ -41,6 +41,8 @@ runs:
             failed_list+=( "$job" )
         done
       
+      [[ ${#failed_list[@]} -eq '' ]] && exit 0
+
       # Format list: replace spaces with <br>
       failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
       
