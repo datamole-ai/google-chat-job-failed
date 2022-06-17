@@ -23,10 +23,11 @@ runs:
     env:
       NEEDS_CONTEXT: ${{ inputs.json }}
       GOOGLE_CHAT_WEBHOOK: ${{ inputs.gchatURL }}
+      BRANCH: 
     
     run: |
       GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
-      HEAD=$(echo ${GITHUB_REF#/refs/heads/})
+      HEAD=$(echo ${GITHUB_REF##*/})
       failed_list=()
       list=( $(echo $NEEDS_CONTEXT | jq 'keys' | sed -e 's/\[ //g' -e 's/\ ]//g' -e 's/\,//g' | tr -d '"') ) 
       echo ${list[@]}
