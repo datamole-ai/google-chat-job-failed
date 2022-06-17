@@ -15,7 +15,7 @@ REPO_NAME=$(echo ${GITHUB_REPOSITORY#*/})
 
 
 
-text="<b>$failed_list</b><br><br>branch: <b>$HEAD\</b>"
+text="<b>$failed_list</b><br><br>branch: <b>$HEAD</b>"
 
 
 
@@ -26,9 +26,8 @@ jq -n \
       --arg repo "repo: $REPO_NAME" \
       --arg gl "$GITHUB_LINK"\
       --arg ref "on branch $HEAD" \
-      '{ "cards": [ {"header": {"title": "<b>JOBS FAILED</b>", "subtitle": $repo}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt}}, "button": {"textButton": "VIEW RUN", "onClick": {"openLink": {"url": $gl}}}]}]}]}'
+      '{"cards":[{"header":{"title":"<b>JOBS FAILED</b>","subtitle":$repo},"sections":[{"widgets":[{"textParagraph":{"text":$txt}},{"button":{"textButton":{"text":"VIEW RUN","onClick":{"openLink":{"url":$gl}}}}}]}]}]}'
 
 
 
-
-
+# { "cards": [ { "header": { "title": "<b>JOBS FAILED</b>", "subtitle": $repo }, "sections": [ { "widgets": [ { "textParagraph": { "text": $txt } }, "button": { "textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": $gl }}}}]}]}] }
