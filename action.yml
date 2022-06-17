@@ -34,7 +34,7 @@ runs:
           [[ "$job_status" == 'failure' ]] && \
             failed_list+=( "$job" )
         done
-      text="Jobs *$failed_list* failed on \`$GITHUB_REF\`<br> @ <br> <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|$GITHUB_REPOSITORY>"  
+      text="Jobs *${failed_list[@]}* failed on \`$GITHUB_REF\`<br> @ <br> <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|$GITHUB_REPOSITORY>"  
       message=$( jq -n --arg t "$text" '{text: $t}' )
       curl -i \
         -H 'Content-Type: application/json' -d "$message" \
