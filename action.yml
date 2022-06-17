@@ -43,7 +43,7 @@ runs:
                         --arg txt "$text" \
                         --arg gl "$GITHUB_LINK"\
                         --arg ref "$GITHUB_REF" \
-                        '{ "cards": [ {"header": {"title": "JOBS FAILED", "subtitle": $ref}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt,onClick: {"openLink": {"url": $gl}}}}]}]}]}' )
+                        '{ "cards": [ {"header": {"title": "JOBS FAILED", "subtitle": $ref}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt}}]}]}]}' )
       curl -i \
         -H 'Content-Type: application/json' -d "$message" \
         -X POST "$GOOGLE_CHAT_WEBHOOK"
