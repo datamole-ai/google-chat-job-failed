@@ -25,12 +25,15 @@ runs:
       GOOGLE_CHAT_WEBHOOK: ${{ inputs.gchatURL }}
     
     run: |
+      failed_list=()
       list=( $(echo $NEEDS_CONTEXT | jq 'keys' | sed -e 's/\[ //g' -e 's/\ ]//g' -e 's/\,//g' | tr -d '"') ) 
       for job in ${list[@]}
         do
           job_status=$(echo $NEEDS_CONTEXT | jq  --arg j "$job" '.[$j]' | jq .'result' | tr -d '"')
           [[ "$job_status" == 'failure' ]] && \
-            text="Job *$job* failed on \`$GITHUB_REF\` @ <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|$GITHUB_REPOSITORY>"
+            failed_list+=($job)
+            
+            text="Jobs *$failed_list* failed on \`$GITHUB_REF\`<br>@<br> <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|$GITHUB_REPOSITORY>"
         done
       message=$( jq -n --arg t "$text" '{text: $t}' )
       curl -i \
