@@ -25,6 +25,7 @@ runs:
       GOOGLE_CHAT_WEBHOOK: ${{ inputs.gchatURL }}
     
     run: |
+      GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
       failed_list=()
       list=( $(echo $NEEDS_CONTEXT | jq 'keys' | sed -e 's/\[ //g' -e 's/\ ]//g' -e 's/\,//g' | tr -d '"') ) 
       echo ${list[@]}
@@ -34,8 +35,15 @@ runs:
           [[ "$job_status" == 'failure' ]] && \
             failed_list+=( "$job" )
         done
-      text="Jobs *${failed_list[@]}* failed on \`$GITHUB_REF\`<br> @ <br> <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|$GITHUB_REPOSITORY>"  
-      message=$( jq -n --arg t "$text" '{text: $t}' )
+      failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
+      
+      text="Jobs *$failed_list* failed on $GITHUB_REF <br> @ <br> <$GITHUB_LINK|$GITHUB_REPOSITORY>"
+      message=$( jq -n \
+                        --arg fl "$failed_list" \
+                        --arg txt "$text" \
+                        --arg gl "$GITHUB_LINK"\
+                        --arg ref "$GITHUB_REF" \
+                        '{ "cards": [ {"header": {"title": "JOBS FAILED", "subtitle": $ref}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt,onClick: {"openLink": {"url": $gl}}}}]}]}]}' )
       curl -i \
         -H 'Content-Type: application/json' -d "$message" \
         -X POST "$GOOGLE_CHAT_WEBHOOK"
