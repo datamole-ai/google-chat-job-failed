@@ -1,16 +1,21 @@
 
 failed_list=( 'a' 'b' 'c' )
-GITHUB_REF='HEAD'
+GITHUB_REF='/refs/head/branch'
 GITHUB_SERVER_URL='https://github.com/'
-GITHUB_REPOSITORY='testrepo'
+GITHUB_REPOSITORY='datamole-ai/testrepo'
 GITHUB_RUN_ID='100'
 
-GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+
 echo $GITHUB_LINK
 failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
 
+GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+HEAD=$(echo ${GITHUB_REF##*/})
+REPO_NAME=$(echo ${GITHUB_REPOSITORY#*/})
 
-text="Jobs *$failed_list* failed on $GITHUB_REF <br> @ <br> <$GITHUB_LINK|$GITHUB_REPOSITORY>"
+
+
+text="<b>$failed_list</b><br><br>branch: <b>$HEAD\</b>"
 
 
 
@@ -18,12 +23,12 @@ text="Jobs *$failed_list* failed on $GITHUB_REF <br> @ <br> <$GITHUB_LINK|$GITHU
 jq -n \
       --arg fl "$failed_list" \
       --arg txt "$text" \
+      --arg repo "repo: $REPO_NAME" \
       --arg gl "$GITHUB_LINK"\
-      --arg ref "$GITHUB_REF" \
-      '{ "cards": [ {"header": {"title": "JOBS FAILED", "subtitle": $ref}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt,onClick: {"openLink": {"url": $gl}}}}]}]}]}'
+      --arg ref "on branch $HEAD" \
+      '{ "cards": [ {"header": {"title": "<b>JOBS FAILED</b>", "subtitle": $repo}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt}}, "button": {"textButton": "VIEW RUN", "onClick": {"openLink": {"url": $gl}}}]}]}]}'
 
 
 
 
 
-#--arg gr "$GITHUB_REPOSITORY" \
