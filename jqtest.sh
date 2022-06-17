@@ -26,7 +26,7 @@ jq -n \
       --arg repo "repo: $REPO_NAME" \
       --arg gl "$GITHUB_LINK"\
       --arg ref "on branch $HEAD" \
-      '{"cards":[{"header":{"title":"<b>JOBS FAILED</b>","subtitle":$repo},"sections":[{"widgets":[{"textParagraph":{"text":$txt}},{"button":{"textButton":{"text":"VIEW RUN","onClick":{"openLink":{"url":$gl}}}}}]}]}]}'
+      '{"cards":[{"header":{"title":"<b>JOBS_FAILED</b>","subtitle":$repo},"sections":[{"widgets":[{"button":{"textButton":{"text":"VIEW_RUN","onClick":{"openLink":{"url":$gl}}}}},{"textParagraph":{"text":$txt}}]}]}]}'
 
 
 
