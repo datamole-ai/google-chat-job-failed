@@ -37,12 +37,12 @@ runs:
         done
       failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
       
-      text="*$failed_list* failed on {$GITHUB_REF#/refs/heads/}"
+      text="<b>$failed_list*</b><br> failed on ${GITHUB_REF#/refs/heads/}"
       message=$( jq -n \
                         --arg fl "$failed_list" \
                         --arg txt "$text" \
                         --arg gl "$GITHUB_LINK"\
-                        --arg ref "on branch {$GITHUB_REF#/refs/heads/}" \
+                        --arg ref "on branch ${GITHUB_REF#/refs/heads/}" \
                         '{ "cards": [ {"header": {"title": "<b>JOBS FAILED</b>", "subtitle": $ref}, "sections": [ {"widgets": [{"textParagraph": {"text": $txt}}]}]}]}' )
       curl -i \
         -H 'Content-Type: application/json' -d "$message" \
