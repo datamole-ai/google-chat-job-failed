@@ -41,6 +41,7 @@ runs:
             failed_list+=( "$job" )
         done
       
+      # Do nothing if no failed jobs.
       [[ ${failed_list[@]} -eq '' ]] && exit 0
 
       # Format list: replace spaces with <br>
