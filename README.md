@@ -6,9 +6,9 @@ Place this as a job at the end of your workflow.
 
 Pass the jobs that you need to track to `needs:`.
 
-The action takes 2 mandatory variables: `gchatURL` and `json`.  
-Leave the json variable as is in the example. This is still a WIP.  
-Add your Google Chat webhook URL to the repo's secrets and send it to the gchatURL variable.   
+The action requires 2 mandatory variables: `gchatURL` and `json`.  
+Leave the `json` variable as is in the example. This is still a WIP.  
+Add your Google Chat webhook URL to the repo's secrets and pass it to the `gchatURL` variable.   
 
 You can add more conditions to the `if:` after `always()`. `always()` is necessary for the job to run even if the workflow fails. 
 
