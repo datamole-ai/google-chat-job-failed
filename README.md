@@ -2,6 +2,8 @@
 This sends messages to google chat when a workflow job fails.
 
 ## Usage
+Place this as a job at the end of your workflow. 
+
 Pass the jobs that you need to track to `needs:`.
 
 The action takes 2 mandatory variables: `gchatURL` and `json`.  
