@@ -18,7 +18,6 @@ post-to-google-chat:
     steps:
       - name: google-chat-job-failed
         uses: datamole-ai/google-chat-job-failed@main
-
         with:
           gchatURL: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           json: ${{ toJSON(needs) }}
