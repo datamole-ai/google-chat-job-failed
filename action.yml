@@ -40,10 +40,10 @@ runs:
           [[ "$job_status" == 'failure' ]] && \
             failed_list+=( "$job" )
         done
-      echo ${failed_list[@]}
+      
       # Do nothing if no failed jobs.
-      [[ echo $(${failed_list[@]}) -eq '' ]] && exit 0
-
+      [[ ${failed_list[@]} -eq '' ]] && exit 0
+      echo ${failed_list[@]}
       # Format list: replace spaces with <br>
       failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
       echo $failed_list
