@@ -46,7 +46,7 @@ runs:
 
       # Format list: replace spaces with <br>
       failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
-      
+      echo $failed_list
 
       text="Failed jobs:<br><b>$failed_list</b>"
       
