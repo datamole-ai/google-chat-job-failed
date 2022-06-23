@@ -42,7 +42,7 @@ runs:
         done
       
       # Do nothing if no failed jobs.
-      [[ ${failed_list[@]} -eq '' ]] && exit 0
+      [[ ${#failed_list[@]} -eq 0 ]] && exit 0
       echo ${failed_list[@]}
       # Format list: replace spaces with <br>
       failed_list=$(echo ${failed_list[@]} | sed -e 's/ /<br>/g')
