@@ -22,7 +22,7 @@ else:
     text = 'Failed jobs: <br><b>' + '<br>'.join(map(str, failed_list)) + '</b>'
 
 text_string = {"cards": [{"header": {"title":"<b>JOBS FAILED</b>","subtitle": head},"sections":[{"widgets":[{"textParagraph":{"text": text}},{"buttons":[{"textButton":{"text":"VIEW RUN","onClick":{"openLink":{"url": github_link}}}}]}]}]}]}
-message = json.loads(text_string)
+message = json.dumps(text_string)
 print(message)
 
 http = urllib3.PoolManager()
@@ -32,3 +32,5 @@ r = http.request(
     headers={'Content-Type': 'application/json'},
     body=message
   )
+print(r.body)
+print(r)
