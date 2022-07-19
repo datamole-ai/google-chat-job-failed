@@ -1,18 +1,28 @@
 import os
 import urllib3
 import json
-
+'''
 needs_context = json.loads(os.getenv('NEEDS_CONTEXT'))
 google_chat_webhook = os.getenv('GOOGLE_CHAT_WEBHOOK')
 github_link = os.getenv('GITHUB_LINK')
 head = os.getenv('HEAD')
 repo_name = os.getenv('REPO_NAME')
+'''
 
-print(needs_context)
-print(google_chat_webhook)
-print(github_link)
-print(head)
-print(repo_name)
+needs_context =   {
+    "Run-Test-CI-push": {
+      "result": "success",
+      "outputs": {}
+    },
+    "Run-Test-CI-dispatch": {
+      "result": "failure",
+      "outputs": {}
+    }
+  }
+google_chat_webhook = "https://chat.googleapis.com/v1/spaces/AAAABmz4ysg/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=nYzDUq_He-wYiM02550qUoMEaxgWMOJF_YbAZ2Es5v0%3D"
+github_link = "GITHUB.DICK"
+head = "HEAD"
+repo_name = "REPO_NAME"
 
 failed_list = []
 
@@ -31,12 +41,12 @@ else:
 text_dict = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": head}, "sections": [{"widgets": [{"textParagraph": {"text": text}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
 # message = json.dumps(text_string).encode('utf-8')
 print(json.dumps(text_dict))
-
 http = urllib3.PoolManager()
 r = http.request(
     'POST',
     google_chat_webhook,
     headers={'Content-Type': 'application/json'},
-    body=json.dumps(text_dict)
+    body=json.(text_dict)
+  )
 
 print(r.data)
