@@ -38,5 +38,5 @@ r = http.request(
     google_chat_webhook,
     headers={'Content-Type': 'application/json'},
     body=json.dumps(text_dict)
-
+)
 print(r.data)
