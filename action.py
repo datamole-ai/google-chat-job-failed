@@ -24,7 +24,7 @@ else:
 
 text_string = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": head}, "sections": [{"widgets": [{"textParagraph": {"text": text}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
 # message = json.dumps(text_string).encode('utf-8')
-print(message)
+print(json.dumps(text_string).encode('utf-8'))
 
 http = urllib3.PoolManager()
 r = http.request(
