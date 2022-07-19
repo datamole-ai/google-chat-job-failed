@@ -33,4 +33,4 @@ r = http.request(
     body=message
   )
 
-print(r)
+print(r.data)
