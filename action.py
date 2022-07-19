@@ -22,7 +22,7 @@ else:
     text = 'Failed jobs: <br><b>' + '<br>'.join(map(str, failed_list)) + '</b>'
     # title = "<b>JOBS FAILED</b>"
 
-text_string = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": head}, "sections": [{"widgets": [{"textParagraph": {"text": text}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
+text_string = f"{"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": head}, "sections": [{"widgets": [{"textParagraph": {"text": {text}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": {github_link}}}}]}]}]}]}"
 message = json.dumps(text_string).encode('utf-8')
 print(message)
 
