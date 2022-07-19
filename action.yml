@@ -25,9 +25,9 @@ runs:
       GOOGLE_CHAT_WEBHOOK: ${{ inputs.gchatURL }}
 
     run: |
-      GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
-      HEAD=$(echo ${GITHUB_REF##*/})
-      REPO_NAME=$(echo ${GITHUB_REPOSITORY#*/})
+      export GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+      export HEAD=$(echo ${GITHUB_REF##*/})
+      export REPO_NAME=$(echo ${GITHUB_REPOSITORY#*/})
       python ${{ github.action_path }}/action.py
       
      
