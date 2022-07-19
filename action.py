@@ -31,7 +31,7 @@ r = http.request(
     'POST',
     google_chat_webhook,
     headers={'Content-Type': 'application/json'},
-    body=message
+    body=message.encode('utf-8')
   )
 
 print(r.data)
