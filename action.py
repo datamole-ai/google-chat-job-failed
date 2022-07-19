@@ -2,7 +2,7 @@ import os
 import urllib3
 import json
 
-needs_context = os.getenv('NEEDS_CONTEXT')
+needs_context = json.loads(os.getenv('NEEDS_CONTEXT'))
 google_chat_webhook = os.getenv('GOOGLE_CHAT_WEBHOOK')
 github_link = os.getenv('GITHUB_LINK')
 head = os.getenv('HEAD')
