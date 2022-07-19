@@ -32,5 +32,5 @@ r = http.request(
     headers={'Content-Type': 'application/json'},
     body=message
   )
-print(r.body)
+
 print(r)
