@@ -13,14 +13,15 @@ Add your Google Chat webhook URL to the repo's secrets and pass it to the `gchat
 You can add more conditions to the `if:` after `always()`. `always()` is necessary for the job to run even if the workflow fails. 
 
 ```YAML
-post-to-google-chat:
-    needs: [ job1, job2, job3 ]
-    if: always() 
-    runs-on: ubuntu-latest
-    steps:
-      - name: google-chat-job-failed
-        uses: datamole-ai/google-chat-job-failed@main
-        with:
-          gchatURL: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
-          json: ${{ toJSON(needs) }}
+jobs:
+    post-to-google-chat:
+        needs: [ job1, job2, job3 ]
+        if: always() 
+        runs-on: ubuntu-latest
+        steps:
+          - name: google-chat-job-failed
+            uses: datamole-ai/google-chat-job-failed@main
+            with:
+              gchatURL: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+              json: ${{ toJSON(needs) }}
 ```
