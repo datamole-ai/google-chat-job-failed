@@ -15,6 +15,9 @@ inputs:
     description: 'google chat webhook'
     required: true
     default: ''
+  initiator:
+    description: 'The user that should be mentioned in the message'
+    required: false
 runs:
   using: "composite"
   
@@ -23,6 +26,7 @@ runs:
     env:
       NEEDS_CONTEXT: ${{ inputs.json }}
       GOOGLE_CHAT_WEBHOOK: ${{ inputs.gchatURL }}
+      INITIATOR: ${{ inputs.initiator }}
     
     run: |
       GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
@@ -53,14 +57,14 @@ runs:
       # Build JSON message
       message=$( jq -n \
                         --arg fl "$failed_list" \
+                        --arg initiator "$INITIATOR" \
                         --arg txt "$text" \
                         --arg repo "$REPO_NAME:$HEAD" \
                         --arg gl "$GITHUB_LINK"\
                         --arg ref "on branch $HEAD" \
-                        '{"cards":[{"header":{"title":"<b>JOBS FAILED</b>","subtitle":$repo},"sections":[{"widgets":[{"textParagraph":{"text":$txt}},{"buttons":[{"textButton":{"text":"VIEW RUN","onClick":{"openLink":{"url":$gl}}}}]}]}]}]}' )
+                        '{"cards":[{"header":{"title":"<b>JOBS FAILED</b>","subtitle":$repo},"sections":[{"widgets":[{"textParagraph":{"text":$initiator}},{"textParagraph":{"text":$txt}},{"buttons":[{"textButton":{"text":"VIEW RUN","onClick":{"openLink":{"url":$gl}}}}]}]}]}]}' )
       
       # Send message to google chat
       curl -i \
         -H 'Content-Type: application/json' -d "$message" \
         -X POST "$GOOGLE_CHAT_WEBHOOK"
-  

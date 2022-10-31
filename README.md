@@ -10,6 +10,8 @@ The action requires 2 mandatory variables: `gchatURL` and `json`.
 Leave the `json` variable as is in the example. This is still a WIP.  
 Add your Google Chat webhook URL to the repo's secrets and pass it to the `gchatURL` variable.   
 
+Another optional variable `initiator` can be passed in to print out who should be responsible for this run. This is espcially useful when the workflow was started by another workflow through a bot.
+
 You can add more conditions to the `if:` after `always()`. `always()` is necessary for the job to run even if the workflow fails. 
 
 ```YAML
