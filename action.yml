@@ -15,19 +15,22 @@ inputs:
     description: 'google chat webhook'
     required: true
     default: ''
+  initiator:
+    description: 'The user that should be mentioned in the message'
+    required: false
 runs:
   using: "composite"
-  
+
   steps:
   - shell: bash
     env:
       NEEDS_CONTEXT: ${{ inputs.json }}
       GOOGLE_CHAT_WEBHOOK: ${{ inputs.gchatURL }}
+      INITIATOR: ${{ inputs.initiator }}
 
     run: |
       export GITHUB_LINK=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
       export HEAD=$(echo ${GITHUB_REF##*/})
       export REPO_NAME=$(echo ${GITHUB_REPOSITORY#*/})
       python ${{ github.action_path }}/action.py
-      
-     
+
