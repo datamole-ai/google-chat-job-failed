@@ -34,14 +34,14 @@ else:
 
 TEXT_DICT = ''
 init_by = ''
-no_initiator = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
-is_initiator = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": init_by}}, {"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
+# no_initiator = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
+# is_initiator = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": init_by}}, {"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
 
 if initiator:
     init_by = 'Initiated by: <b>' + initiator + '<b>'
-    TEXT_DICT = is_initiator
+    TEXT_DICT = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": init_by}}, {"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
 else:
-    TEXT_DICT = no_initiator
+    TEXT_DICT = no_initiator = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
 
 print(json.dumps(TEXT_DICT))
 
