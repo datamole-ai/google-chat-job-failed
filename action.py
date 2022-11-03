@@ -2,24 +2,20 @@ import os
 import urllib3
 import json
 
+
+# Action input variables
 needs_context = json.loads(os.getenv('NEEDS_CONTEXT'))
 google_chat_webhook = os.getenv('GOOGLE_CHAT_WEBHOOK')
 initiator = os.getenv('INITIATOR')
+# Other environment variables
 github_link = os.getenv('GITHUB_LINK')
 head = os.getenv('HEAD')
 repo_name = os.getenv('REPO_NAME')
-
-print(needs_context)
-print(google_chat_webhook)
-print(github_link)
-print(head)
-print(repo_name)
 
 # List to store failed jobs
 failed_list = []
 
 # Add failed jobs to list if job's result is failure
-print(type(needs_context))
 for job_name in needs_context:
     job = needs_context.get(job_name)
     if job.get('result') == 'failure':
@@ -32,19 +28,14 @@ if len(failed_list) == 0:
 else:
     TEXT = 'Failed jobs: <br><b>' + '<br>'.join(map(str, failed_list)) + '</b>'
 
-TEXT_DICT = ''
-init_by = ''
-# no_initiator = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
-# is_initiator = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": init_by}}, {"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
-
+# Choose JSON dict if initiator has been set or not.
 if initiator:
-    init_by = 'Initiated by: <b>' + initiator + '<b>'
-    TEXT_DICT = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": init_by}}, {"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
+    INIT_BY = 'Initiated by: <b>' + initiator + '<b>'
+    TEXT_DICT = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": INIT_BY}}, {"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
 else:
-    TEXT_DICT = no_initiator = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
+    TEXT_DICT = {"cards": [{"header": {"title": "<b>JOBS FAILED</b>", "subtitle": repo_name+":"+head}, "sections": [{"widgets": [{"textParagraph": {"text": TEXT}}, {"buttons": [{"textButton": {"text": "VIEW RUN", "onClick": {"openLink": {"url": github_link}}}}]}]}]}]}
 
-print(json.dumps(TEXT_DICT))
-
+# Make POST request to webhook URL
 http = urllib3.PoolManager()
 r = http.request(
     'POST',
